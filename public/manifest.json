@@ -1,0 +1,21 @@
+{
+  "short_name": "Goel Store",
+  "name": "Goel Store - Online Groceries",
+  "icons": [
+    {
+      "src": "https://png.pngtree.com/png-vector/20230407/ourmid/pngtree-trolley-line-icon-vector-png-image_6692905.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://png.pngtree.com/png-vector/20230407/ourmid/pngtree-trolley-line-icon-vector-png-image_6692905.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#059669",
+  "display": "standalone",
+  "orientation": "portrait"
+}

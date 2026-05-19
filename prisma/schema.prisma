@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id           String      @id @default(uuid())
+  name         String
+  category     String      @default("General")
+  mrp          Float
+  sellingPrice Float
+  unit         String?
+  image        String?     
+  isActive     Boolean     @default(true)
+  items        OrderItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now()) @updatedAt
+}
+
+model Customer {
+  id            String   @id @default(uuid())
+  name          String
+  phone         String   @unique
+  address       String?
+  dues          Float    @default(0)
+  creditEnabled Boolean  @default(true)
+  creditLimit   Float    @default(0)
+  orders        Order[]
+  ledger        Ledger[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+}
+
+model Order {
+  id             String      @id @default(uuid())
+  customerId     String
+  customer       Customer    @relation(fields: [customerId], references: [id])
+  totalAmount    Float
+  originalAmount Float @default(0)      
+  appliedBalance Float       @default(0)
+  paymentMode    String
+  assignedQr     String?     // <-- NAYA COLUMN: Yahan save hoga ki kisko konsa QR mila
+  paymentStatus  String
+  orderStatus    String      @default("NEW")
+  items          OrderItem[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @default(now()) @updatedAt
+}
+
+model OrderItem {
+  id           String   @id @default(uuid())
+  orderId      String
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId    String?  
+  product      Product? @relation(fields: [productId], references: [id])
+  customName   String?  
+  quantity     Int
+  sellingPrice Float
+}
+
+model Ledger {
+  id          String   @id @default(uuid())
+  customerId  String
+  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  amount      Float
+  reason      String
+  createdAt   DateTime @default(now())
+}
+
